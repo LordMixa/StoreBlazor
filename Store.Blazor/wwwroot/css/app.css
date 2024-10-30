@@ -101,3 +101,9 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+
+.dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto;
+    width: 300px;
+}

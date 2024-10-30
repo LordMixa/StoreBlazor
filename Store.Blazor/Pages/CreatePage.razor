@@ -1,0 +1,167 @@
+﻿@page "/createpage"
+@using Store.Blazor.Models.Authors
+@using Store.Blazor.Models.Categories
+@using Store.Blazor.Models.Books
+@using Store.Blazor.Services.Interfaces
+@using System.Collections.Generic
+@inject IAuthorService authorService
+@inject ICategoryService categoryService
+@inject IBookService bookService
+
+<h3>CreatePage</h3>
+
+<label>
+    Title:
+    <InputText @bind-Value="_title"/>
+</label>
+<label>
+    Description:
+    <InputText @bind-Value="_description" />
+</label>
+<label>
+    Price:
+    <InputNumber @bind-Value="_price" />
+</label>
+<label>
+    Date of publication:
+    <InputDate @bind-Value="_dateOfPublication" />
+</label>
+
+<div>
+    <label>Select Authors</label>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" @onclick="ToggleDropdownAuthor">
+        </button>
+        <div class="dropdown-menu" style="display: @(isOpenAuthor ? "block" : "none")">
+            @foreach (var item in Authors)
+            {
+                <div class="form-check dropdown-item">
+                    <input type="checkbox" class="form-check-input"
+                           @onchange="e => ToggleSelectionAuthors(item, e.Value)"
+                           checked="@SelectedAuthors.Contains(item)" />
+                    <label class="form-check-label">@item.FirstName @item.LastName</label>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<p>Selected authors:</p>
+<ul>
+    @foreach (var item in SelectedAuthors)
+    {
+        <li>@item.FirstName @item.LastName</li>
+    }
+</ul>
+
+<div>
+    <label>Select Categories</label>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" @onclick="ToggleDropdownCategory">
+        </button>
+        <div class="dropdown-menu" style="display: @(isOpenCategory ? "block" : "none")">
+            @foreach (var item in Categories)
+            {
+                <div class="form-check dropdown-item">
+                    <input type="checkbox" class="form-check-input"
+                           @onchange="e => ToggleSelectionCategories(item, e.Value)"
+                           checked="@SelectedCategories.Contains(item)" />
+                    <label class="form-check-label">@item.Name</label>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<p>Selected categories:</p>
+<ul>
+    @foreach (var item in SelectedCategories)
+    {
+        <li>@item.Name</li>
+    }
+</ul>
+
+<p>Created book ids:</p>
+<ul>
+    @foreach (var item in CreatedBookIds)
+    {
+        <li>@item</li>
+    }
+</ul>
+
+<button class="btn btn-primary" @onclick="CreateBook">Create</button>
+
+@code {
+    private List<AuthorNameModel> SelectedAuthors = new();
+    private List<CategoryModel> SelectedCategories = new();
+
+    private List<int> CreatedBookIds = new();
+
+    private IEnumerable<AuthorNameModel> Authors = new List<AuthorNameModel>();
+    private IEnumerable<CategoryModel> Categories = new List<CategoryModel>();
+
+    private string _title;
+    private string _description;
+    private DateTime _dateOfPublication;
+    private decimal _price;
+
+    private bool isOpenAuthor;
+    private bool isOpenCategory;
+
+    private void ToggleDropdownAuthor()
+    {
+        isOpenAuthor = !isOpenAuthor;
+    }
+
+    private void ToggleDropdownCategory()
+    {
+        isOpenCategory = !isOpenCategory;
+    }
+
+    private void ToggleSelectionAuthors(AuthorNameModel item, object isChecked)
+    {
+        if ((bool)isChecked)
+        {
+            SelectedAuthors.Add(item);
+        }
+        else
+        {
+            SelectedAuthors.Remove(item);
+        }
+    }  
+
+    private void ToggleSelectionCategories(CategoryModel item, object isChecked)
+    {
+        if ((bool)isChecked)
+        {
+            SelectedCategories.Add(item);
+        }
+        else
+        {
+            SelectedCategories.Remove(item);
+        }
+    }
+
+    private async void CreateBook()
+    {
+        var book = new BookCreateModel
+            {
+                Title = _title,
+                Description = _description,
+                Price = _price,
+                DateOfPublication = _dateOfPublication,
+                AuthorIds = SelectedAuthors.Select(a => a.Id).ToList(),
+                CategoryIds = SelectedCategories.Select(c => c.Id).ToList(),
+            };
+        var response = await bookService.CreateAsync(book);
+
+        CreatedBookIds.Add(response);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Authors = await authorService.GetAsync();
+
+        Categories = await categoryService.GetAsync();
+    }
+}
