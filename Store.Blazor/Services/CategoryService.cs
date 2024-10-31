@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using Store.Blazor.Extensions;
 using Store.Blazor.Models.Categories;
 using Store.Blazor.Services.Interfaces;
 
@@ -17,10 +17,7 @@ namespace Store.Blazor.Services
 
         public async Task<IEnumerable<CategoryModel>> GetAsync()
         {
-            var response = await _httpClient.GetAsync("/api/categories");
-            var responseContent = await response.Content.ReadAsStringAsync();
-
-            var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryModel>>(responseContent);
+            var categories = await _httpClient.GetAsync<IEnumerable<CategoryModel>>("/api/categories");
 
             return categories;
         }

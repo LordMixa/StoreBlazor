@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Store.Blazor.Extensions;
 using Store.Blazor.Models.Books;
 using Store.Blazor.Services.Interfaces;
 using System.Net.Http.Json;
@@ -18,10 +19,7 @@ namespace Store.Blazor.Services
 
         public async Task<IEnumerable<BookModel>> GetAsync()
         {
-            var response = await _httpClient.GetAsync("/api/books");
-            var responseContent = await response.Content.ReadAsStringAsync();
-
-            var books = JsonConvert.DeserializeObject<IEnumerable<BookModel>>(responseContent);
+            var books = await _httpClient.GetAsync<IEnumerable<BookModel>>("/api/books");
 
             return books;
         }
