@@ -13,23 +13,14 @@ namespace Store.Blazor
 
             var uri = builder.Configuration["ApiSettings:BaseAddress"];
 
-            builder.Services.AddHttpClient<IBookService, BookService>
-            (client =>
+            builder.Services.AddHttpClient("BaseHttpClient", client =>
             {
                 client.BaseAddress = new Uri(uri);
             });
 
-            builder.Services.AddHttpClient<IAuthorService, AuthorService>
-            (client =>
-            {
-                client.BaseAddress = new Uri(uri);
-            });
-
-            builder.Services.AddHttpClient<ICategoryService, CategoryService>
-            (client =>
-            {
-                client.BaseAddress = new Uri(uri);
-            });
+            builder.Services.AddTransient<IBookService, BookService>();
+            builder.Services.AddTransient<ICategoryService, CategoryService>();
+            builder.Services.AddTransient<IAuthorService, AuthorService>();
 
             await builder.Build().RunAsync();
         }

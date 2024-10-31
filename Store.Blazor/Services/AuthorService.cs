@@ -1,22 +1,26 @@
-﻿using Store.Blazor.Models.Authors;
+﻿using Newtonsoft.Json;
+using Store.Blazor.Models.Authors;
 using Store.Blazor.Services.Interfaces;
-using System.Net.Http.Json;
 
 namespace Store.Blazor.Services
 {
     public class AuthorService : IAuthorService
     {
         private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public AuthorService(HttpClient httpClient)
+        public AuthorService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
+            _httpClient = _httpClientFactory.CreateClient("BaseHttpClient");
         }
 
         public async Task<IEnumerable<AuthorNameModel>> GetAsync()
         {
             var response = await _httpClient.GetAsync("/api/authors");
-            var authors = await response.Content.ReadFromJsonAsync<IEnumerable<AuthorNameModel>>();
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var authors = JsonConvert.DeserializeObject<IEnumerable<AuthorNameModel>>(responseContent);
 
             return authors;
         }
