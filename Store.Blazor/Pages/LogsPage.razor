@@ -1,0 +1,257 @@
+﻿@page "/logs"
+
+<style>
+	.main-block {
+		display: grid;
+		grid-template-columns: 250px 1fr 150px;
+		grid-template-rows: 5% 1fr;
+		width: 100%;
+		height: 100vh;
+		background-color: #f0f0f0;
+	}
+
+	.content {
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	.button-filter {
+		border: 1px solid darkgrey;
+		height: 30px;
+		margin: 0 20px;
+		align-self: center;
+		font-size: 13px
+	}
+
+	.text-name {
+		font-size: 24px;
+		margin: 20px;
+		align-self: center;
+	}
+
+	.table {
+		display: grid;
+		grid-template-columns: 1fr 40% 20% 1fr 1fr 1fr 1fr;
+		grid-template-rows: repeat(auto-fill, 50px);
+		background-color: #ffffff;
+		grid-column: 1 / -1;
+		margin-left: 20px;
+		width: 97%;
+	}
+
+	.table-header {
+		font-weight: bold;
+		font-size: 15px;
+		padding: 10px;
+		height: 100%;
+		width: 100%;
+		border-bottom: 1px solid #d7d4d4;
+	}
+
+	.table-cell{
+		font-size: 12px;
+		padding: 10px;
+		word-wrap: break-word;
+		height: 100%;
+		width: 100%;
+		border-bottom: 1px solid #d7d4d4;
+	}
+
+	.error{
+		background-color: palevioletred;
+		width: 70px;
+		text-align: center;
+		height: 30px;
+		padding: 5px;
+		border-radius: 5px;
+	}
+
+	.success {
+		background-color: lightgreen;
+		width: 70px;
+		text-align: center;
+		height: 30px;
+		border-radius: 5px;
+		padding: 5px;
+	}
+
+</style>
+<html>
+<body>
+	<div class="main-block">
+		<div class="text-name">Transaction Log</div>
+		<div></div>
+		<button class="button-filter">
+			<img src="settings.png" alt="Filters" />
+			FILTERS
+		</button>
+		<div class="table">
+			<div class="table-header">Date/Time</div>
+			<div class="table-header">Context ID</div>
+			<div class="table-header">Transaction</div>
+			<div class="table-header">Sent/Received</div>
+			<div class="table-header">Source</div>
+			<div class="table-header">Triggered</div>
+			<div class="table-header">Status</div>
+
+			@foreach (var log in Logs)
+			{
+				<div class="table-cell">@log.DateTime.ToString()</div>
+				<div class="table-cell">@log.ContextId</div>
+				<div class="table-cell">@log.Transaction</div>
+				<div class="table-cell">
+					@if(@log.SentReceived=="Received")
+					{
+						<img src="received.png" alt="Received" />
+					}
+					else if (@log.SentReceived=="Sent")
+					{
+						<img src="sent.png" alt="Sent" />
+					}
+					@log.SentReceived
+					</div>
+				<div class="table-cell">@log.Source</div>
+				<div class="table-cell">@log.Triggered</div>
+				<div class="table-cell">
+					@if (@log.Status=="error")
+					{
+						<div class="error">•@log.Status</div>
+					}
+					else if (@log.Status == "success")
+					{
+						<div class="success">•@log.Status</div>
+					}
+					</div>
+			}
+		</div>
+	</div>
+</body>
+</html>
+
+@code {
+	private List<Log> Logs = new();
+	public class Log()
+	{
+		public DateTime DateTime { get; set; }
+		public string ContextId { get; set; }
+		public string Transaction { get; set; }
+		public string SentReceived { get; set; }
+		public string Source { get; set; }
+		public string Triggered { get; set; }
+		public string Status { get; set; }
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		Logs.Add(
+			new Log
+				{
+					Status = "error",
+					DateTime = DateTime.Now,
+					ContextId = "asdasdwqeqwdqwdwqdqwdsada",
+					Transaction = "Create",
+					SentReceived = "Received",
+					Source = "Success",
+					Triggered = ""
+				}
+		);
+		Logs.Add(
+			new Log
+				{
+					Status = "success",
+					DateTime = DateTime.Now,
+					ContextId = "asdasdwqeqwdqwdwqdwqeqweqweqweqweqwewqewqeqwewqeqweqwdsadawdawda",
+					Transaction = "Create",
+					SentReceived = "Received",
+					Source = "Success",
+					Triggered = ""
+				}
+		);
+		Logs.Add(
+			new Log
+				{
+					Status = "success",
+					DateTime = DateTime.Now,
+					ContextId = "asdasdwqeqwdqwdwwdawdawda",
+					Transaction = "Create",
+					SentReceived = "Sent",
+					Source = "Success",
+					Triggered = ""
+				}
+		);
+		Logs.Add(
+			new Log
+				{
+					Status = "error",
+					DateTime = DateTime.Now,
+					ContextId = "asdasdwqeqwdqwdwwdawdawda",
+					Transaction = "Create",
+					SentReceived = "Sent",
+					Source = "Success",
+					Triggered = ""
+				}
+		);
+		Logs.Add(
+			new Log
+				{
+					Status = "success",
+					DateTime = DateTime.Now,
+					ContextId = "asdasdwqeqwdqwdwwdawdawda",
+					Transaction = "Create",
+					SentReceived = "Sent",
+					Source = "Success",
+					Triggered = ""
+				}
+		);
+		Logs.Add(
+			new Log
+				{
+					Status = "success",
+					DateTime = DateTime.Now,
+					ContextId = "asdasdwqeqwdqwdwwdawdawda",
+					Transaction = "Create",
+					SentReceived = "Sent",
+					Source = "Success",
+					Triggered = ""
+				}
+		);
+		Logs.Add(
+			new Log
+				{
+					Status = "error",
+					DateTime = DateTime.Now,
+					ContextId = "asdasdwqeqwdqwdwwdawdawda",
+					Transaction = "Create",
+					SentReceived = "Received",
+					Source = "Success",
+					Triggered = ""
+				}
+		);
+		Logs.Add(
+			new Log
+				{
+					Status = "success",
+					DateTime = DateTime.Now,
+					ContextId = "asdasdwqeqwdqwdwwdawdawda",
+					Transaction = "Create",
+					SentReceived = "Sent",
+					Source = "Success",
+					Triggered = ""
+				}
+		);
+		Logs.Add(
+			new Log
+				{
+					Status = "success",
+					DateTime = DateTime.Now,
+					ContextId = "asdasdwqeqwdqwdwwdawdawda",
+					Transaction = "Create",
+					SentReceived = "Sent",
+					Source = "Success",
+					Triggered = ""
+				}
+		);
+
+	}
+
+}
