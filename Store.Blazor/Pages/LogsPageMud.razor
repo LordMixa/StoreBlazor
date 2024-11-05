@@ -1,0 +1,83 @@
+﻿@page "/logsmud"
+@using MudBlazor
+@inject IDialogService DialogService
+
+<style>
+.content {
+	padding-top: 0;
+}
+</style>
+
+<MudGrid Style="width: 97%; margin: 10px">
+	<MudItem xs="6">
+		<MudText Typo="Typo.h4">Transaction Log</MudText>
+	</MudItem>
+	<MudItem xs="1" Class="d-flex ml-auto align-center justify-center">
+		<MudButton Variant="Variant.Filled">Filters</MudButton>
+	</MudItem>
+	<MudDataGrid Items="@Logs" Style="width: 100%">
+		<Columns>
+			<PropertyColumn Property="x => x.DateTime" Title="Date/Time" HeaderStyle="font-weight: bold" />
+			<PropertyColumn Property="x => x.ContextId" Title="Context Id" CellStyle="word-break: break-word;" HeaderStyle="font-weight: bold" />
+			<PropertyColumn Property="x => x.Transaction" HeaderStyle="font-weight: bold" />
+			<TemplateColumn Title="Sent/Received" HeaderStyle="font-weight: bold">
+				<CellTemplate>
+					@if (context.Item.SentReceived == "Received")
+					{
+						<MudImage Fluid="true" src="received.png" alt="Received" Class="rounded-lg" />
+					}
+					else if (context.Item.SentReceived == "Sent") 
+					{
+						<MudImage Fluid="true" src="sent.png" alt="Sent" Class="rounded-lg" />
+					}
+					<span>@context.Item.SentReceived</span>
+				</CellTemplate>
+			</TemplateColumn>
+			<PropertyColumn Property="x => x.Source" HeaderStyle="font-weight: bold" />
+			<PropertyColumn Property="x => x.Triggered" HeaderStyle="font-weight: bold" />
+			<TemplateColumn Title="Status" HeaderStyle="font-weight: bold">
+				<CellTemplate>
+					@if (context.Item.Status == "error")
+					{
+						<MudPaper Class="d-flex align-center justify-center" Style="background-color: lightcoral; padding: 4px; border-radius: 4px;">
+							<span>@context.Item.Status</span>
+						</MudPaper>
+					}
+					else if (context.Item.Status == "success")
+					{
+						<MudPaper Class="d-flex align-center justify-center" Style="background-color: lightgreen; padding: 4px; border-radius: 4px;">
+							<span>@context.Item.Status</span>
+						</MudPaper>
+					}
+				</CellTemplate>
+			</TemplateColumn>
+			<TemplateColumn>
+				<HeaderTemplate>
+					<MudButton Variant="Variant.Filled" OnClick="OpenDialogAsync">...</MudButton>
+				</HeaderTemplate>
+			</TemplateColumn>
+		</Columns>
+	</MudDataGrid>
+</MudGrid>
+
+@code {
+	public record Log(DateTime DateTime, string ContextId, string Transaction, string SentReceived, string Source, string Triggered, string Status);
+
+	private List<Log> Logs = new List<Log>
+	{
+		new Log( DateTime.Now, "asdasdwqeqwdqwdwqdqwdsada", "Create", "Sent","Success", "", "success"),
+		new Log( DateTime.Now, "asdasdwqeqwdqwasdasdwqeqwdqwdwqdqwdsadaasdasdwqeqwdqwdwqdqwdsadadwqdqwdsada", "Get", "Received","Success", "", "success"),
+		new Log( DateTime.Now, "qweasdasdasd", "Get", "Sent","Success", "", "success"),
+		new Log( DateTime.Now, "213wsadasdfadsfas", "Update", "Sent","Success", "", "error"),
+		new Log( DateTime.Now, "asdqqqq111111111111111111", "Update", "Sent","Success", "", "success"),
+		new Log( DateTime.Now, "22321312312312312312312321312", "Get", "Received","Success", "", "error"),
+		new Log( DateTime.Now, "124sdszavsdGsdGASWGAW WE GWE ", "Update", "Received","Success", "", "success"),
+	};
+
+	private Task OpenDialogAsync()
+	{
+		var options = new DialogOptions { CloseOnEscapeKey = true };
+
+		return DialogService.ShowAsync<PopUpMud>("This is just a caption", options);
+	}
+}

@@ -31,7 +31,7 @@
 
 	.table {
 		display: grid;
-		grid-template-columns: 1fr 40% 20% 1fr 1fr 1fr 1fr;
+		grid-template-columns: 1fr 35% 20% 1fr 1fr 1fr 1fr 1fr;
 		grid-template-rows: repeat(auto-fill, 50px);
 		background-color: #ffffff;
 		grid-column: 1 / -1;
@@ -48,7 +48,7 @@
 		border-bottom: 1px solid #d7d4d4;
 	}
 
-	.table-cell{
+	.table-cell {
 		font-size: 12px;
 		padding: 10px;
 		word-wrap: break-word;
@@ -57,7 +57,7 @@
 		border-bottom: 1px solid #d7d4d4;
 	}
 
-	.error{
+	.error {
 		background-color: palevioletred;
 		width: 70px;
 		text-align: center;
@@ -75,6 +75,42 @@
 		padding: 5px;
 	}
 
+	.popup-button {
+		grid-row: 1 / end;
+		grid-column: 8 / 9;
+		height: 30px;
+		margin-top: 10px;
+	}
+
+	.popup {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.close-button {
+		position: absolute;
+		top: 28%; 
+		background: white;
+		font-size: 16px;
+		cursor: pointer;
+	}
+
+	table {
+		border: 3px solid black;
+		border-spacing: 5px;
+	}
+
+	th, td {
+		border: 1px solid grey;
+		padding: 10px 20px 10px 20px;
+	}
 </style>
 <html>
 <body>
@@ -93,6 +129,70 @@
 			<div class="table-header">Source</div>
 			<div class="table-header">Triggered</div>
 			<div class="table-header">Status</div>
+			<button class="popup-button" @onclick="ShowPopUp">...</button>
+
+			@if (isVisible)
+			{
+				<div class="popup">
+					<button class="close-button" @onclick="ClosePopUp">Close</button>
+				<table>
+					<caption>This is just a caption</caption>
+					<colgroup>
+						<col span="2" style="background-color: darkgray;">
+						<col span="2" style="background-color: aquamarine;">
+						<col span="3" style="background-color: white;">
+					</colgroup>
+					<tr>
+						<th>col 1</th>
+						<th>col 2</th>
+						<th>col 3</th>
+						<th>col 4</th>
+						<th>col 5</th>
+						<th>col 6</th>
+						<th>col 7</th>
+					</tr>
+					<tr>
+						<td colspan="3">1</td>
+						<td rowspan="3">2</td>
+						<td colspan="2">3</td>
+						<td rowspan="2">N</td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>5</td>
+						<td>6</td>
+						<td>7</td>
+						<td>8</td>
+					</tr>
+					<tr>
+						<td colspan="3">9</td>
+						<td colspan="2">10</td>
+						<td>N</td>
+					</tr>
+					<tr>
+						<td colspan="7">N</td>
+					</tr>
+					<tr>
+						<td>N</td>
+						<td>N</td>
+						<td>N</td>
+						<td>N</td>
+						<td>N</td>
+						<td>N</td>
+						<td>N</td>
+					</tr>
+					<tr>
+						<th>col 1</th>
+						<th>col 2</th>
+						<th>col 3</th>
+						<th>col 4</th>
+						<th>col 5</th>
+						<th>col 6</th>
+						<th>col 7</th>
+					</tr>
+				</table>
+				</div>
+			}
 
 			@foreach (var log in Logs)
 			{
@@ -100,20 +200,20 @@
 				<div class="table-cell">@log.ContextId</div>
 				<div class="table-cell">@log.Transaction</div>
 				<div class="table-cell">
-					@if(@log.SentReceived=="Received")
+					@if (@log.SentReceived == "Received")
 					{
 						<img src="received.png" alt="Received" />
 					}
-					else if (@log.SentReceived=="Sent")
+					else if (@log.SentReceived == "Sent")
 					{
 						<img src="sent.png" alt="Sent" />
 					}
 					@log.SentReceived
-					</div>
+				</div>
 				<div class="table-cell">@log.Source</div>
 				<div class="table-cell">@log.Triggered</div>
 				<div class="table-cell">
-					@if (@log.Status=="error")
+					@if (@log.Status == "error")
 					{
 						<div class="error">•@log.Status</div>
 					}
@@ -121,7 +221,7 @@
 					{
 						<div class="success">•@log.Status</div>
 					}
-					</div>
+				</div>
 			}
 		</div>
 	</div>
@@ -129,6 +229,19 @@
 </html>
 
 @code {
+
+	private bool isVisible = false;
+
+	private void ClosePopUp()
+	{
+		isVisible = false;
+	}
+
+	private void ShowPopUp()
+	{
+		isVisible = true;
+	}
+
 	private List<Log> Logs = new();
 	public class Log()
 	{

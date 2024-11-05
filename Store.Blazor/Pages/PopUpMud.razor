@@ -1,0 +1,77 @@
+﻿@using MudBlazor
+<style>
+	.mud-dialog-width-sm {
+		width: 700px;
+	}
+
+	.grid-table {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+	}
+
+	.grid-table > div {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 10px;
+		border: 1px solid black;
+	}
+
+	.header, .footer {
+		font-weight: bold;
+	}
+
+</style>
+<body>
+	<div class="grid-table">
+		<div class="header" style="background-color: darkgrey" ;>col 1</div>
+		<div class="header" style="background-color: darkgrey">col 2</div>
+		<div class="header" style="background-color: aquamarine">col 3</div>
+		<div class="header" style="background-color: aquamarine">col 4</div>
+		<div class="header">col 5</div>
+		<div class="header">col 6</div>
+		<div class="header">col 7</div>
+
+		<div class="white-cell" style="grid-column: span 3; background-color: darkgrey">1</div>
+		<div class="white-cell" style="grid-row: span 3; background-color: aquamarine">2</div>
+		<div class="white-cell" style="grid-column: span 2;">3</div>
+		<div class="white-cell" style="grid-row: span 2;">N</div>
+
+		<div class="white-cell" style="background-color: darkgrey">4</div>
+		<div class="white-cell" style="background-color: darkgrey">5</div>
+		<div class="white-cell" style="background-color: aquamarine">6</div>
+		<div class="white-cell">7</div>
+		<div class="white-cell">8</div>
+
+		<div class="white-cell" style="grid-column: span 3;background-color: darkgrey">9</div>
+		<div class="white-cell" style="grid-column: span 2;">10</div>
+		<div class="white-cell">N</div>
+
+		<div class="white-cell" style="grid-column: span 7;background-color: darkgrey">N</div>
+
+		<div class="white-cell" style="background-color: darkgrey">N</div>
+		<div class="white-cell" style="background-color: darkgrey">N</div>
+		<div class="white-cell" style="background-color: aquamarine">N</div>
+		<div class="white-cell" style="background-color: aquamarine">N</div>
+		<div class="white-cell">N</div>
+		<div class="white-cell">N</div>
+		<div class="white-cell">N</div>
+
+		<div class="footer" style="background-color: darkgrey">col 1</div>
+		<div class="footer" style="background-color: darkgrey">col 2</div>
+		<div class="footer" style="background-color: aquamarine">col 3</div>
+		<div class="footer" style="background-color: aquamarine">col 4</div>
+		<div class="footer">col 5</div>
+		<div class="footer">col 6</div>
+		<div class="footer">col 7</div>
+	</div>
+
+</body>
+@code {
+	[CascadingParameter]
+	private IMudDialogInstance MudDialog { get; set; }
+
+	private void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+	private void Cancel() => MudDialog.Cancel();
+}

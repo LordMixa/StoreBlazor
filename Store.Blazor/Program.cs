@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 using Store.Blazor.Services;
 using Store.Blazor.Services.Interfaces;
 
@@ -17,6 +18,8 @@ namespace Store.Blazor
             {
                 client.BaseAddress = new Uri(uri);
             });
+
+            builder.Services.AddMudServices();
 
             builder.Services.AddTransient<IBookService, BookService>();
             builder.Services.AddTransient<ICategoryService, CategoryService>();
