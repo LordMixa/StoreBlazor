@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-export interface BookModel {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-}
+import { BookModel } from '../../models/bookmodel'
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +11,7 @@ export class BookService {
 
   constructor(private http: HttpClient) { }
 
-  getMyModelData(): Observable<BookModel[]> {
+  GetBooks(): Observable<BookModel[]> {
     return this.http.get<BookModel[]>(this.apiUrl);
   }
 }

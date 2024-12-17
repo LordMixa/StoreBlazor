@@ -1,6 +1,10 @@
-<h1>Hello World</h1>
+<h1>Hello World {{counter}}</h1>
 <h1>Main Page</h1>
 
-<button class="button-books" [routerLink]="['/book']">Get books</button>
+<button (click) = "toggleChildComponent()">Get books</button>
+
+<app-book-page *ngIf="showBook" (openBookDetail)="openBookDetailPage($event)"></app-book-page>
+
+<app-book-details [id] = idOpenBookDetail *ngIf="showBookDetail" (countClicked)="onCounterChanged()"></app-book-details>
 
 <router-outlet />

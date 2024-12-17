@@ -1,0 +1,10 @@
+<p>Book Model Details</p>
+
+<div *ngIf="bookDetail$ | async as bookDetail">
+  <p><strong>ID:</strong> {{ bookDetail.id }}</p>
+  <p><strong>Title:</strong> {{ bookDetail.title }}</p>
+  <p><strong>Description:</strong> {{ bookDetail.description }}</p>
+  <p><strong>Price:</strong> {{ bookDetail.price }}</p>
+</div>
+
+<button (click)="increment()">Count++</button>

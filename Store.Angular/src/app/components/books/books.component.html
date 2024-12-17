@@ -1,0 +1,6 @@
+<h2>My Model Data</h2>
+<ul>
+  <li *ngFor="let item of bookModelData" (click)="onItemClick(item.id)">
+    ID: {{ item.id }} - Title: {{ item.title }}
+  </li>
+</ul>

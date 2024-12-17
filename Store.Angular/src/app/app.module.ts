@@ -4,7 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BookPageComponent } from './components/components.component';
+import { BookPageComponent } from './components/books/books.component';
+import { BookDetailsComponent } from './components/bookdetails/bookdetails.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { BookPageComponent } from './components/components.component';
     AppRoutingModule,
     HttpClientModule,
     BookPageComponent,
-    CommonModule 
+    BookDetailsComponent,
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
