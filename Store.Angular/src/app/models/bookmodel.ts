@@ -3,4 +3,5 @@ export interface BookModel {
   title: string;
   description: string;
   price: number;
+  dateOfPublication: Date;
 }

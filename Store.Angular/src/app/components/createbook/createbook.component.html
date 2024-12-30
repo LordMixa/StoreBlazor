@@ -1,0 +1,62 @@
+<div class="book-form-container">
+  <h2>Create Book</h2>
+
+  <form [formGroup]="bookForm" (ngSubmit)="submitForm()">
+    <div>
+      <label for="title">Book Title</label>
+
+      <div *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched">
+        <small *ngIf="bookForm.get('title')?.hasError('required')">This field is required.</small>
+        <small *ngIf="bookForm.get('title')?.hasError('minlength')">Title must be at least 3 characters long.</small>
+      </div>
+
+      <input id="title" formControlName="title" />
+
+    </div>
+
+    <div>
+      <label for="description">Description</label>
+
+      <div *ngIf="bookForm.get('description')?.invalid && bookForm.get('description')?.touched">
+        <small *ngIf="bookForm.get('description')?.hasError('minlength')">Description must be at least 3 characters long.</small>
+      </div>
+      <input id="description" formControlName="description" />
+
+    </div>
+
+    <div>
+      <label for="price">Price</label>
+
+      <div *ngIf="bookForm.get('price')?.invalid && bookForm.get('price')?.touched">
+        <small *ngIf="bookForm.get('price')?.hasError('required')">This field is required.</small>
+        <small *ngIf="bookForm.get('price')?.hasError('min')">Price must costs 1 or more dollars.</small>
+        <small *ngIf="bookForm.get('price')?.hasError('max')">Price cannot be more than 1000 dollars.</small>
+      </div>
+      <input id="price" formControlName="price" type="number" />
+
+    </div>
+
+    <div>
+      <label for="dateOfPublication">Date Of Publication</label>
+      <div *ngIf="bookForm.get('dateOfPublication')?.invalid && bookForm.get('dateOfPublication')?.touched">
+        <small *ngIf="bookForm.get('dateOfPublication')?.hasError('required')">This field is required.</small>
+        <small *ngIf="bookForm.get('dateOfPublication')?.hasError('min')">Incorrect date.</small>
+        <small *ngIf="bookForm.get('dateOfPublication')?.hasError('max')">Incorrect date.</small>
+      </div>
+      <input id="dateOfPublication" formControlName="dateOfPublication" type="date" />
+
+    </div>
+
+    <form [formGroup]="bookForm" (ngSubmit)="submitForm()">
+      <button type="submit" [disabled]="bookForm.invalid">Submit</button>
+    </form>
+
+    <div *ngIf="bookId">
+      <p>Book created successfully! ID: {{ bookId }}</p>
+    </div>
+
+    <div *ngIf="errorMessage">
+      <p>Error: {{ errorMessage }}</p>
+    </div>
+  </form>
+</div>
