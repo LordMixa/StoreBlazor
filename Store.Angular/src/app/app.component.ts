@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +13,9 @@ export class AppComponent {
   counter: number = 0;
   showBook: boolean = false;
   showBookDetail: boolean = false;
-  showBookCreate: boolean = false;
   idOpenBookDetail: number = 0;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: AuthService,) { }
 
   onCounterChanged() {
     this.counter++;
@@ -23,7 +23,7 @@ export class AppComponent {
 
   toggleChildGetBooksComponent() {
     this.navigateMain();
-    this.showBook = !this.showBook; 
+    this.showBook = !this.showBook;
   }
 
   openBookDetailPage(id: number) {
@@ -43,12 +43,12 @@ export class AppComponent {
   }
 
   togglerCreateBookComponent(): void {
-    this.showBookCreate = !this.showBookCreate;
-    if (this.showBookCreate) {
-      this.closeComponents();
-      this.router.navigate(['/create-book']);
-    } else {
-      this.navigateMain();
-    }
+    this.closeComponents();
+    this.router.navigate(['/create-book']);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

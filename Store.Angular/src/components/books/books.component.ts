@@ -3,13 +3,13 @@ import { BookService } from '../../services/books/book.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { BookModel } from '../../models/bookmodel'
-import { BookDetailsComponent } from '../../components/bookdetails/bookdetails.component'
+import { BookDetailsComponent } from '../bookdetails/bookdetails.component'
 
 @Component({
   selector: 'app-book-page',
   templateUrl: './books.component.html',
   imports: [CommonModule],
-  styleUrl: './books.component.css'
+  styleUrl: './books.component.css',
 })
 export class BookPageComponent implements OnInit {
   bookModelData: BookModel[] = []; 

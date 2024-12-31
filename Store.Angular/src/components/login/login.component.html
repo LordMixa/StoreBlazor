@@ -1,0 +1,14 @@
+<div>
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div>
+      <label for="token">Token:</label>
+      <input id="token" formControlName="token" placeholder="Enter token" />
+      <div *ngIf="loginForm.get('token')?.invalid && loginForm.get('token')?.touched">
+        <small *ngIf="loginForm.get('token')?.errors?.['required']">Token is required.</small>
+        <small *ngIf="loginForm.get('token')?.errors?.['minlength']">Token must be at least 6 characters long.</small>
+      </div>
+    </div>
+    <button type="submit" [disabled]="loginForm.invalid">Login</button>
+  </form>
+</div>
